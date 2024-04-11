@@ -30,6 +30,25 @@ class BinaryTree:
         else:
             raise Exception("The reference doesn't exist")
 
+    def insert(self, data: T, node: Node[T] = None):
+        if node is None:
+            node = self.__root
+        if node is None:
+            self.__root = Node(data)
+            return self.__root
+        if data < node.data:
+            if node.left is None:
+                node.left = Node(data)
+                return node.left
+            else:
+                return self.insert(data, node.left)
+        elif data > node.data:
+            if node.right is None:
+                node.right = Node(data)
+                return node.right
+            else:
+                return self.insert(data, node.right)
+
     def depth(self, ref: T, *args) -> int:
         node = self.__root if len(args) == 0 else args[0]
         if node is None:
@@ -46,6 +65,18 @@ class BinaryTree:
             else:
                 # Existe en algún lado
                 return max(left, right) + 1
+
+    def search_binary(self, ref: T, node: Node[T] = None):
+        if node is None:
+            node = self.__root
+        if node is None:
+            return None
+        if node.data == ref:
+            return node
+        elif ref < node.data:
+            return self.search_binary(ref, node.left)
+        else:
+            return self.search_binary(ref, node.right)
 
     def __search(self, ref: T, *args) -> Optional[Node]:
         node = self.__root if len(args) == 0 else args[0]
